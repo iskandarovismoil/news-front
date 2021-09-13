@@ -9,8 +9,7 @@ class Delete extends React.Component {
   state = {}
 
 
-  handleAdd = e => {
-    e.preventDefault();
+  componentDidMount() {
 
     var config = {
       headers: {
@@ -21,11 +20,7 @@ class Delete extends React.Component {
     
     axios.delete('/delete/'+this.props.match.params.id, config)
       .then(result => {
-        console.log(result);
-        if(result.data.success)
-          this.setState({ data: { success: true, errors: false }})
-        else
-          this.setState({ data: { success: false, errors: [result.data.error.title, result.data.error.description ]}})
+        console.log(result)
       })
       .catch(error => {
         console.log(error);
@@ -34,7 +29,7 @@ class Delete extends React.Component {
 
   render() { 
     return (
-      <></>
+      <Redirect to='/user/my' />
     );
   }
 }
