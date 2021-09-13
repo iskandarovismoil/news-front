@@ -1,18 +1,16 @@
 import React from "react";
-import Description from "../../components/description";
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardHeader, MDBCardFooter } from 'mdb-react-ui-kit';
 import axios from "axios";
 
 class Details extends React.Component {
 
-  state = {
-    
-  }
+  state = {}
 
   componentDidMount() {
     axios.get('news/'+this.props.match.params.id).then(
       result => {
         this.setState({ data: result.data });
-
+        
         axios.get('user/'+result.data.userid).then(
           result => {
             this.setState({ user: result.data });
@@ -40,9 +38,16 @@ class Details extends React.Component {
     }
 
     return (
-      <>  
-        <Description userid={ userid } username={ username } title={ title } description={ description } date={ createdDate }/>
-      </>
+      <div className="p-2">  
+        <MDBCard className='col-example mt-3 shadow-4'>
+          <MDBCardHeader><a href={ '/user/'+userid }>{ username }</a></MDBCardHeader>
+              <MDBCardBody>
+                  <MDBCardTitle>{ title }</MDBCardTitle>
+                  <MDBCardText>{ description }</MDBCardText>
+              </MDBCardBody>
+          <MDBCardFooter className='text-muted text-center'>{ createdDate }</MDBCardFooter>
+      </MDBCard>
+      </div>
     );
   }
 }
