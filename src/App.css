@@ -11,6 +11,18 @@
   -webkit-backdrop-filter: blur( 5px )!important;
 }
 
+.card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .footer {
   background: rgba( 255, 255, 255, 0.4 )!important;
   backdrop-filter: blur( 5px )!important;

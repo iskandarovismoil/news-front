@@ -7,8 +7,9 @@ import {
   MDBTabsPane,
   MDBInput,
   MDBBtn,
-  MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardFooter,
+  MDBCard, MDBCardBody, MDBCardTitle, MDBCardText,
 } from 'mdb-react-ui-kit';
+import  { Redirect } from 'react-router-dom';
 
 
 import axios from 'axios';
@@ -64,7 +65,11 @@ class Auth extends React.Component {
     this.setState({ fillActive: value });
   };
 
-  render() {
+  render() {  
+
+    if (localStorage.getItem('token')) {
+      return <Redirect to="/" push={true} />
+    }
 
     return (
       <div className="p-2">

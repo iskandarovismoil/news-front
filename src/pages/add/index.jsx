@@ -48,7 +48,10 @@ class Auth extends React.Component {
         return <Redirect to='/user/my' />
       else
         var error = this.state.data.errors.map(data => (<li>{data}</li>));
-    }    
+    }   
+    if (localStorage.getItem('token') == null) {
+      return <Redirect to="/" push={true} />
+    }
     return (
       <div className="p-2">
       <MDBCard className='col-example mt-3 shadow-4 bg-white col-12 col-sm-8 col-md-6 mx-auto'>
