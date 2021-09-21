@@ -1,23 +1,33 @@
 import axios from "axios";
 import React from "react";
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCol, MDBCardLink   } from 'mdb-react-ui-kit';
+import Pagination from 'react-js-pagination';
 
 class Profile extends React.Component {
 
   state = {}
 
-  componentDidMount() {
+  async componentDidMount() {
 
+   await this.getNewsList();
+
+  }
+
+  async getNewsList(page_number = 1) {
 
     if(this.props.match.params.userid == 'my' && localStorage.getItem('token')) {
 
-      var config = {
-        headers: {
-           Authorization: "Bearer " +  localStorage.getItem('token')
-        }
-      }
-  
-      axios.get('/my', config).then(
+      const user_news = await this.axiosGet('/my?page='+page_number);
+
+      this.setState({ 
+        data: user_news.data.data, 
+        current_page: user_news.data.current_page,
+        per_page: user_news.data.per_page,
+        total: user_news.data.total
+      })
+
+      console.log(user_news);
+      /*axios.get('/my', config).then(
         result => {
             this.setState({ data: result.data });
             this.setState({ user: true });
@@ -25,11 +35,19 @@ class Profile extends React.Component {
         error => {
           console.log(error);
         }
-      )
+      )*/
 
     } else {
 
-      axios.get('news/'+this.props.match.params.userid+'/all').then(
+      const user_news = await this.axiosGet('news/'+this.props.match.params.userid+'/all?page='+page_number);
+
+      this.setState({ 
+        data: user_news.data.data, 
+        current_page: user_news.data.current_page,
+        per_page: user_news.data.per_page,
+        total: user_news.data.total
+      })
+      /*axios.get().then(
         result => {
             this.setState({ data: result.data });
             this.setState({ user: false });
@@ -37,9 +55,32 @@ class Profile extends React.Component {
         error => {
           console.log(error);
         }
-      )
+      )*/
 
     }  
+
+  }
+
+  async axiosGet(url) {
+
+    const config = {
+      headers: {
+         Authorization: "Bearer " +  localStorage.getItem('token')
+      }
+    }
+
+    var res = null;
+
+    await axios.get(url, config).then(
+      result => {
+        res = result;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+
+    return res;
 
   }
 
@@ -64,11 +105,26 @@ class Profile extends React.Component {
         </MDBCol>
       ));
       
+      var activePage = this.state.current_page;
+      var total = this.state.total;
+      var per_page = this.state.per_page;
+
     }
 
     return (
       <>
-         {cards} 
+         {cards}
+
+         <div className="col-12 d-flex justify-content-center mt-4">
+          <Pagination
+            activePage={activePage}
+            totalItemsCount={total}
+            itemsCountPerPage={per_page}
+            onChange={(page_number) => this.getNewsList(page_number)}
+            itemClass="page-item p-1"
+            linkClass="page-link"
+          />
+         </div> 
       </>
     );
   }

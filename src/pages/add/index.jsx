@@ -9,7 +9,7 @@ import {
 
 import axios from 'axios';
 
-class Auth extends React.Component {
+class Add extends React.Component {
 
   state = {}
 
@@ -81,4 +81,4 @@ class Auth extends React.Component {
   }
 }
 
-export default Auth;
+export default Add;

@@ -19,6 +19,7 @@ import Profile from "./pages/profile/";
 import Auth from "./pages/auth/";
 import Add from "./pages/add/";
 import Delete from "./pages/delete/";
+import Change from "./pages/profile/change";
 
 class App extends React.Component {
 
@@ -96,6 +97,7 @@ class App extends React.Component {
                 <Route path="/details/:id" component={Details}/>
                 <Route path="/add" component={Add} />
                 <Route path="/delete/:id" component={Delete} />
+                <Route path="/change/:id" component={Change} />
               </Switch>
             </MDBRow>
           </MDBContainer>

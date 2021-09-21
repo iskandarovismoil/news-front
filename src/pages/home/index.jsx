@@ -21,7 +21,6 @@ class Home extends React.Component {
           data: result.data.data, 
           current_page: result.data.current_page,
           per_page: result.data.per_page,
-          last_page_url: result.data.last_page_url,
           total: result.data.total
         })
       },
@@ -53,8 +52,6 @@ class Home extends React.Component {
       var activePage = this.state.current_page;
       var total = this.state.total;
       var per_page = this.state.per_page;
-
-      console.log(this.state.total)
       
     }
 

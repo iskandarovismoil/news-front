@@ -68,7 +68,7 @@ class Details extends React.Component {
 
       if(my == true) {
         var user_button = <>
-          <MDBBtn className='mx-2 shadow-0' color='success'>
+          <MDBBtn className='mx-2 shadow-0' href={"/change/"+id} color='success'>
             Изменить
           </MDBBtn>
 
