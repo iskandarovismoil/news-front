@@ -1,6 +1,6 @@
 ## First
 
-Install the ### `npm start`
+Install the ### `npm`
 
 # Getting Started with Create React App
 
