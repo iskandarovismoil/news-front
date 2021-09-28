@@ -25,8 +25,6 @@ class Profile extends React.Component {
         per_page: user_news.data.per_page,
         total: user_news.data.total
       })
-
-      console.log(user_news);
       /*axios.get('/my', config).then(
         result => {
             this.setState({ data: result.data });
@@ -36,7 +34,6 @@ class Profile extends React.Component {
           console.log(error);
         }
       )*/
-
     } else {
 
       const user_news = await this.axiosGet('news/'+this.props.match.params.userid+'/all?page='+page_number);
@@ -109,22 +106,27 @@ class Profile extends React.Component {
       var total = this.state.total;
       var per_page = this.state.per_page;
 
+      if(total > per_page) {
+        var pagination = (
+          <div className="col-12 d-flex justify-content-center mt-4">
+            <Pagination
+              activePage={activePage}
+              totalItemsCount={total}
+              itemsCountPerPage={per_page}
+              onChange={(page_number) => this.getNewsList(page_number)}
+              itemClass="page-item p-1"
+              linkClass="page-link"
+            />
+           </div>
+        )
+      }
+
     }
 
     return (
       <>
          {cards}
-
-         <div className="col-12 d-flex justify-content-center mt-4">
-          <Pagination
-            activePage={activePage}
-            totalItemsCount={total}
-            itemsCountPerPage={per_page}
-            onChange={(page_number) => this.getNewsList(page_number)}
-            itemClass="page-item p-1"
-            linkClass="page-link"
-          />
-         </div> 
+         {pagination}
       </>
     );
   }

@@ -53,21 +53,27 @@ class Home extends React.Component {
       var total = this.state.total;
       var per_page = this.state.per_page;
       
+      if(total > per_page) {
+        var pagination = (
+          <div className="col-12 d-flex justify-content-center mt-4">
+            <Pagination
+              activePage={activePage}
+              totalItemsCount={total}
+              itemsCountPerPage={per_page}
+              onChange={(page_number) => this.getNewsList(page_number)}
+              itemClass="page-item p-1"
+              linkClass="page-link"
+            />
+           </div>
+        )
+      }
+      
     }
 
     return (
       <>
          {cards}
-         <div className="col-12 d-flex justify-content-center mt-4">
-          <Pagination
-            activePage={activePage}
-            totalItemsCount={total}
-            itemsCountPerPage={per_page}
-            onChange={(page_number) => this.getNewsList(page_number)}
-            itemClass="page-item p-1"
-            linkClass="page-link"
-          />
-         </div>
+         {pagination}
       </>
     );
   }

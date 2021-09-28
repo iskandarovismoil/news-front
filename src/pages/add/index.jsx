@@ -11,7 +11,12 @@ import axios from 'axios';
 
 class Add extends React.Component {
 
-  state = {}
+  state = {
+    data: {
+      success: undefined,
+      errors: undefined
+    }
+  }
 
 
   handleAdd = e => {
@@ -34,7 +39,7 @@ class Add extends React.Component {
         if(result.data.success)
           this.setState({ data: { success: true, errors: false }})
         else
-          this.setState({ data: { success: false, errors: [result.data.error.title, result.data.error.description ]}})
+          this.setState({ data: { success: false, errors: result.data.error}})
 
       })
       .catch(error => {
@@ -43,12 +48,10 @@ class Add extends React.Component {
   };
 
   render() {
-    if(this.state.data) {
-      if(this.state.data.success)
-        return <Redirect to='/user/my' />
-      else
-        var error = this.state.data.errors.map(data => (<li>{data}</li>));
-    }   
+
+    if(this.state.data.success)
+      return <Redirect to='/user/my' />
+       
     if (localStorage.getItem('token') == null) {
       return <Redirect to="/" push={true} />
     }
@@ -56,9 +59,18 @@ class Add extends React.Component {
       <div className="p-2">
       <MDBCard className='col-example mt-3 shadow-4 bg-white col-12 col-sm-8 col-md-6 mx-auto'>
         <MDBCardBody>
-          <ul className="bg-danger rounded">
-            {error}
-          </ul> 
+          
+          { this.state.data.errors &&
+            <ul className="bg-danger rounded">
+              { this.state.data.errors.title &&
+                <li>{ this.state.data.errors.title }</li>
+              }
+              { this.state.data.errors.description &&
+                <li>{ this.state.data.errors.description }</li>
+              }
+            </ul>
+          }
+
           <form onSubmit={this.handleAdd} className="text-center">
 
             <MDBInput label='Название' id='title' type='text' className="mt-4" 

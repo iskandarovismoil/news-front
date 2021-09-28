@@ -18,6 +18,10 @@ class Auth extends React.Component {
 
   state = {
     fillActive: "tab1",
+    data: {
+      success: undefined,
+      errors: undefined
+    },
   }
 
   handleLogin = e => {
@@ -50,7 +54,13 @@ class Auth extends React.Component {
 
     axios.post('register', data)
       .then(result => {
-        window.location.reload();
+        //window.location.reload();
+        if(result.data.success)
+          this.setState({ data: { success: true}})
+        else {
+          this.setState({ data: { success: false, errors: result.data.error}})
+          console.log(result);
+        }
       })
       .catch(error => {
         console.log(error);
@@ -67,16 +77,18 @@ class Auth extends React.Component {
 
   render() {  
 
-    if (localStorage.getItem('token')) {
+
+    if (localStorage.getItem('token'))
       return <Redirect to="/" push={true} />
-    }
+
+    if(this.state.data.success)
+      return <Redirect to='/' push={true} />
 
     return (
       <div className="p-2">
       <MDBCard className='col-example mt-3 shadow-4 bg-white col-12 col-sm-8 col-md-6 mx-auto'>
         <MDBCardBody>
             <MDBCardTitle>
-
               <MDBTabs fill className='mb-3'>
                 <MDBTabsItem>
                   <MDBTabsLink onClick={() => this.handleFillClick('tab1')} active={this.state.fillActive === 'tab1'}>
@@ -106,11 +118,8 @@ class Auth extends React.Component {
                   <MDBInput label='Пароль' id='password' type='password' className="mt-4 mb-3"
                     onChange={e => this.password = e.target.value} />
 
-                  <a href='#'>Забыл пароль ?</a>
-
                   <div className="d-grid gap-2 mt-3">
                     <MDBBtn size="12">Вход</MDBBtn>
-                    <p className="mt-3">Не пользователь ? <a href="#" onClick={() => this.handleFillClick('tab2')} active={this.state.fillActive === 'tab2'}>Регистрация</a></p>
                   </div>
 
                 </form>
@@ -118,6 +127,21 @@ class Auth extends React.Component {
               </MDBTabsPane>
 
               <MDBTabsPane show={this.state.fillActive === 'tab2'}>
+
+              { this.state.data.errors &&
+                <ul className="bg-danger rounded">
+                  { this.state.data.errors.name &&
+                    <li>{ this.state.data.errors.name }</li>
+                  }
+                  { this.state.data.errors.email &&
+                    <li>{ this.state.data.errors.email }</li>
+                  }
+                  { this.state.data.errors.password &&
+                    <li>{ this.state.data.errors.password }</li>
+                  }
+                </ul>
+              }
+
                   <form onSubmit={this.handleRegister}>
                       <MDBInput onChange={e => this.name = e.target.value} label='Name' id='name' type='text' className="mt-4" />
                       <MDBInput onChange={e => this.email = e.target.value} label='E-mail' id='email' type='email' className="mt-4" />

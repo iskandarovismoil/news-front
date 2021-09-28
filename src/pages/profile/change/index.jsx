@@ -16,6 +16,11 @@ class Change extends React.Component {
             headers: {
                 Authorization: "Bearer " +  localStorage.getItem('token')
             }
+        },
+
+        data: {
+          success: undefined,
+          errors: undefined
         }
 
     }
@@ -53,16 +58,14 @@ class Change extends React.Component {
        this.axiosPut('edit/'+this.state.id, data).then(
             result => {
               if(result.data.success)
-                return <Redirect to='/user/my' />
+                this.setState({ data: { success: true}})
               else
-                var error = this.state.data.errors.map(data => (<li>{data}</li>)); 
+                this.setState({ data: { success: false, errors: result.data.error}})
             },
             error => {
                 console.log(error);
             }
         );
-
-        console.log(data);
 
     };
 
@@ -122,13 +125,25 @@ class Change extends React.Component {
       return <Redirect to="/" push={true} />
     }
 
+    if(this.state.data.success)
+      return <Redirect to='/user/my' />
+
     return (
       <div className="p-2">
       <MDBCard className='col-example mt-3 shadow-4 bg-white col-12 col-sm-8 col-md-6 mx-auto'>
         <MDBCardBody>
-          <ul className="bg-danger rounded">
-            
-          </ul> 
+          
+          { this.state.data.errors &&
+            <ul className="bg-danger rounded">
+              { this.state.data.errors.title &&
+                <li>{ this.state.data.errors.title }</li>
+              }
+              { this.state.data.errors.description &&
+                <li>{ this.state.data.errors.description }</li>
+              }
+            </ul>
+          }
+
           <form onSubmit={this.handleChange} className="text-center">
 
             <MDBInput label='Название' value={this.state.title} name="title" id='title' type='text' className="mt-4" 
